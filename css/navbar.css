@@ -1,0 +1,26 @@
+/* btn ctc-us */
+.bg-custom {
+    background-color: azure !important;
+    transition: 0.3s;
+    border:1px solid #ff496e;
+    color:#ff496e !important;
+}
+
+/*hover ctc-us */
+.bg-custom:hover {
+    background-color: #ff496e !important;
+    border: 1px solid rgba(0, 0, 0, 0);
+    color: #ffff !important;
+}
+
+.bg-active {
+    background-color: rgb(255, 240, 250) !important;
+    transition: 0.3s;
+    border: 0px;
+    color: #ff496e !important;
+
+}
+
+.navbar {
+    width: 100%;
+}

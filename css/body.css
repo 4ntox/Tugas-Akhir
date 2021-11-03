@@ -1,0 +1,108 @@
+.desc {
+    max-width: 400px;
+}
+
+.tebel-banget {
+    font-weight: 900;
+}
+
+.tebel-sedang {
+    font-weight: bold;
+}
+
+/* btn join-us */
+.button {
+    background-image: linear-gradient(to right, #cc3467 0%, #ff4963 51%);
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+
+}
+
+/* btn hov join-us */
+.button:hover {
+    background-image: linear-gradient(to right, #a22b52 0%, #ca3d59 51%);
+    color: white;
+}
+
+.gambar {
+    display: flexbox;
+
+}
+
+.img {
+    width: 500px;
+    z-index: -1;
+
+}
+
+.gabaw {
+    /* display: flexbox; */
+    padding-left: 50px;
+    padding-right: 50px;
+    padding: auto;
+}
+
+.link {
+    color: gray;
+    transition: 0.3s;
+
+}
+
+.link:hover {
+    color: #ff4968;
+}
+
+
+/* mengatur responsive */
+
+@media screen and (max-width: 600px;) {
+
+    .img {
+        display: none;
+        width: 500px;
+    }
+
+    .gambar {
+        display: block;
+    }
+
+    .gabaw {
+        display:contents;
+    }
+}
+
+@media screen and (max-width: 800px;) {
+    
+    .img {
+        display: none;
+        width: 500px;
+    }
+
+    .gambar {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 1199px;) {
+    
+    .img {
+        width: 500px;
+        z-index: -1;
+    }
+
+}
+
+@media screen and (max-width: 992px;) {
+    
+    .img {
+        width: 300px;
+        z-index: -1;
+    }
+}
+
+
