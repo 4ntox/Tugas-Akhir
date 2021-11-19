@@ -2,6 +2,10 @@
 
 // panggil file koneksi php
     require_once ("koneksi.php");
+// mengaktifkan sesi
+    // session_start();
+// panggil file actreg
+    // include ("actreg.php");
 
 // proses login admin
 if (isset($_POST["signin"])) {
@@ -9,22 +13,25 @@ if (isset($_POST["signin"])) {
     $password = $_POST["password"];
 
     $result = mysqli_query($mysqli, "SELECT * FROM petugas WHERE user_login = '$user_login'");
-    // cek user login ada datanya atau tdk??
-    // var_dump ($result);
-    //     die();
-    // echo mysqli_num_rows($result);
-    if(mysqli_num_rows($result) === 1) {
+    // var_dump ($result); die();
 
+    // cek user login ada datanya atau tdk?? 
+    if(mysqli_num_rows($result) > 0) {
+
+        // include ("actreg.php");
         // jika ada cek passwordnya -- row adl variabel menampung data dr database di variabel result
         $row = mysqli_fetch_assoc($result);
-        // var_dump ($row);
-        if(password_verify($password, $row["password"])) {
-            header("location: ../login/dashboard.php");
+        // var_dump ($row); die();
+        $password= hash('sha256', $password);
+        if($password===$row['password']) {
+            header("location: ../forms/general.php");
+            // echo "password salah..!!";
             exit;
 
+        } else {
+            header("location: ../examples/login.php");
         }
     }
-
     $error = true;
 
 }
