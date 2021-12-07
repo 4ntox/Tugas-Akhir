@@ -1,4 +1,14 @@
 <?php
+
+session_start();
+// cek apakah ada session yg aktif
+if( isset($_SESSION["login"]) ) {
+
+  header("location: ../forms/general.php");
+  exit();
+}
+
+
 // konek ke mysql
 require_once ("../../../database/koneksi.php");
 require_once ("../../../database/action.php");

@@ -1,5 +1,13 @@
 <?php
 
+session_start();
+// cek apakah ada session yg aktif
+if( !isset($_SESSION["login"]) ) {
+
+  header("location: ../examples/login.php");
+  exit();
+}
+
 // konek ke mysql
 require_once ("../../../database/koneksi.php");
 
@@ -15,6 +23,10 @@ $admin = mysqli_query($mysqli, $adm);
 // mengeksekusi tampilan data paket
 $pkt = "SELECT*FROM paket";
 $paket = mysqli_query($mysqli, $pkt);
+
+// mengeksekusi tampilan data seo
+$qseo = "SELECT*FROM seo";
+$seo = mysqli_query($mysqli, $qseo);
 
 
 
@@ -38,7 +50,7 @@ $paket = mysqli_query($mysqli, $pkt);
 	<div class="wrapper">
 		  <!-- Preloader -->
 		  <div class="preloader flex-column justify-content-center align-items-center">
-			  <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+			  <img class="animation__shake" src="../../dist/img/Logo.png" alt="AdminLTELogo" height="60" width="60">
 		  </div>
 
 		  <!-- Navbar -->
@@ -46,25 +58,25 @@ $paket = mysqli_query($mysqli, $pkt);
 			<!-- Left navbar links -->
 				<ul class="navbar-nav">
 					<li class="nav-item">
-					  <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+					  <a class="nav-link" data-widget="pushmenu" href="" role="button"><i class="fas fa-bars"></i></a>
 					</li>
 					<li class="nav-item d-none d-sm-inline-block">
-					  <a href="general.php" class="nav-link">Home</a>
+					  <a href="../forms/general.php" class="nav-link">Home</a>
 					</li>
 					<li class="nav-item d-none d-sm-inline-block">
-					  <a href="../examples/login.php" class="nav-link">Logout</a>
+					  <a href="../examples/logout.php" class="nav-link">Logout</a>
 					</li>
 				</ul>
 			  <!-- Main Sidebar Container -->
 			  <aside class="main-sidebar sidebar-dark-primary elevation-4">
 				<!-- Brand Logo -->
-				<a href="#" class="brand-link">
-				  <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+				<a href="" class="brand-link">
+				  <img src="../../dist/img/Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 				  <span class="brand-text font-weight-light">Admin</span>
 				</a>
 
 				<!-- Sidebar Search Form -->
-				<div class="form-inline">
+				<!-- <div class="form-inline">
 				  <div class="input-group" data-widget="sidebar-search">
 					<input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
 					  <div class="input-group-append">
@@ -73,15 +85,15 @@ $paket = mysqli_query($mysqli, $pkt);
 						</button>
 					  </div>
 				  </div>
-				</div>
+				</div> -->
 		  
 				<!-- Sidebar Menu -->
 				<nav class="mt-2">
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 					  <!-- Add icons to the links using the .nav-icon class
 						with font-awesome or any other icon font library -->          
-						  <li class="nav-item">
-							  <a href="#" class="nav-link">
+						<li class="nav-item">
+							  <a href="" class="nav-link">
 								<i class="nav-icon fas fa-table"></i>
 								<p>
 								  Form
@@ -90,28 +102,27 @@ $paket = mysqli_query($mysqli, $pkt);
 							  </a>
 							<ul class="nav nav-treeview">
 							  <li class="nav-item">
-								<a href="../forms/general.php" class="nav-link">
-								  <i class="far fa-circle nav-icon"></i>
-								  <p>Form General Input</p>
-								</a>
+                  <a href="../forms/general.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Form General Input</p>
+                  </a>
 							  </li>
 							  <li class="nav-item">
-								<a href="table.php" class="nav-link">
-								  <i class="far fa-circle nav-icon"></i>
-								  <p>Form Data View</p>
-								</a>
+								  <a href="table.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Form Data View</p>
+								  </a>
 							  </li>
 							</ul>
-						  </li>
-						  <li class="nav-header">EXAMPLES</li>
-						  <li class="nav-item">
-							<a href="pages/gallery.html" class="nav-link">
-							  <i class="nav-icon far fa-image"></i>
-							  <p>
-							  Gallery
-							  </p>
-							</a>
-						  </li>
+						</li>
+                <!-- <li class="nav-header">EXAMPLES</li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="nav-icon far fa-image"></i>
+                      <p>Gallery</p>
+                    </a>
+                  </li>
+                </li> -->
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->
@@ -129,7 +140,7 @@ $paket = mysqli_query($mysqli, $pkt);
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="../forms/general.php">Home</a></li>
                 <li class="breadcrumb-item active">Table Data View</li>
               </ol>
             </div>
@@ -171,7 +182,8 @@ $paket = mysqli_query($mysqli, $pkt);
                             <td></td>                                                      
                             <td></td>                                                                                                                                                                                                                           
                             <td>
-                              <a href= "#">Delete</a>
+                              <a href= "../forms/form_edit.php?kd=<?=$data['id_armada']?>"> Edit </a>
+                              <a href= "../forms/form_hapus.php?kd=<?=$data['id_armada']?>"> Delete </a>
                             </td>                                                 
                           <tr>
                               <?php }?>  
@@ -230,8 +242,8 @@ $paket = mysqli_query($mysqli, $pkt);
                                             <td><?=$data2['harga']?></td>
                                             <td><?=$data2['gambar']?></td>
                                             <td>
-                                              <a href= "#">Edit</a>
-                                              <a href= "#">Delete</a>
+                                              <a href= "../forms/form_edit.php?kode=<?=$data2['id_paket']?>"> Edit </a>
+                                              <a href= "../forms/form_hapus.php?kode=<?=$data2['id_paket']?>"> Delete </a>
                                             </td>
                                           </tr>
                                               <?php }?>
@@ -282,7 +294,7 @@ $paket = mysqli_query($mysqli, $pkt);
                                                             <td><?=$data1['user_login']?></td>
                                                             <td><?=$data1['password']?></td>
                                                             <td>
-                                                                <a href= "#">Delete</a>
+                                                                <a href= "../forms/form_hapus.php?kda=<?=$data1['id_petugas']?>">Delete</a>
                                                             </td>
                                                           </tr>
                                                               <?php }?>
@@ -291,7 +303,59 @@ $paket = mysqli_query($mysqli, $pkt);
                                               </div>
                                                     <!-- /.card-body -->
                                           </div>
-                    </div> 
+                                    </div> 
+
+                                    <div class="col-md-12">
+                                          <!-- tabel seo -->
+                                          <div class="card card-success">
+                                              <div class="card-header">
+                                                    <h3 class="card-title">Tabel Data SEO</h3>
+                                                    <div class="card-tools">
+                                                      <ul class="pagination pagination-sm float-right">
+                                                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                                      </ul>
+                                                    </div>
+                                              </div>
+                                          
+                                              <!-- tabel start -->
+                                              <div class="card-body p-0">
+                                                      <table class="table">
+                                                        <thead>
+                                                          <tr>
+                                                            <th>Description</th>
+                                                            <th>Keywords</th>
+                                                            <th>Author</th>
+                                                            <th>robots Follow</th>
+                                                            <th>robots Index</th>
+                                                            <th colspan=2 style="width: 40px">Aksi</th>
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                              <?php foreach($seo as $seo1) {?>
+                                                          <tr>
+                                                            <td><?=$seo1['description']?></td>
+                                                            <td><?=$seo1['keywords']?></td>
+                                                            <td><?=$seo1['author']?></td>
+                                                            <td><?=$seo1['robots_follow']?></td>
+                                                            <td><?=$seo1['robots_index']?></td>
+                                                            <td>
+                                                                <a href= "../forms/general.php">Edit</a>
+                                                            </td>
+                                                          </tr>
+                                                              <?php }?>
+                                                        </tbody>
+                                                      </table>
+                                              </div>
+                                                    <!-- /.card-body -->
+                                          </div>
+                                    </div> 
+
+
             </div>
             <!-- general form elements -->
             </div>
@@ -304,7 +368,7 @@ $paket = mysqli_query($mysqli, $pkt);
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.1.0
     </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2021 <a href="">All Senses Journey</a>.</strong> All rights reserved.
   </footer>
   <!-- /.content-wrapper -->
   

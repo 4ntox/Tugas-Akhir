@@ -1,5 +1,13 @@
 <?php
 
+session_start();
+// cek apakah ada session yg aktif
+if( !isset($_SESSION["login"]) ) {
+
+  header("location: ../examples/login.php");
+  exit();
+}
+
 // konek ke mysql
 require_once ("../../../database/koneksi.php");
 
@@ -7,8 +15,13 @@ require_once ("../../../database/koneksi.php");
 $query = "SELECT * FROM `armada`";
 $dataArmada = mysqli_query($mysqli, $query);
 
-// panggil query mysql proses simpan armada
+// panggil query mysql proses simpan armada, paket, petugas
 require ("../../../database/input.php");
+
+// panggil queri data seo
+$select = "SELECT * FROM seo";
+  $query_seo = mysqli_query($mysqli, $select);
+  $seo = mysqli_fetch_assoc($query_seo);
 
 ?>
 
@@ -44,19 +57,19 @@ require ("../../../database/input.php");
 					  <a href="general.php" class="nav-link">Home</a>
 					</li>
 					<li class="nav-item d-none d-sm-inline-block">
-					  <a href="../examples/login.php" class="nav-link">Logout</a>
+					  <a href="../examples/logout.php" class="nav-link">Logout</a>
 					</li>
 				</ul>
 			  <!-- Main Sidebar Container -->
 			  <aside class="main-sidebar sidebar-dark-primary elevation-4">
 				<!-- Brand Logo -->
-				<a href="#" class="brand-link">
-				  <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+				<a href="" class="brand-link">
+				  <img src="../../dist/img/Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 				  <span class="brand-text font-weight-light">Admin</span>
 				</a>
 
 				<!-- Sidebar Search Form -->
-				<div class="form-inline">
+				<!-- <div class="form-inline">
 				  <div class="input-group" data-widget="sidebar-search">
 					<input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
 					  <div class="input-group-append">
@@ -65,7 +78,7 @@ require ("../../../database/input.php");
 						</button>
 					  </div>
 				  </div>
-				</div>
+				</div> -->
 		  
 				<!-- Sidebar Menu -->
 				<nav class="mt-2">
@@ -73,7 +86,7 @@ require ("../../../database/input.php");
 					  <!-- Add icons to the links using the .nav-icon class
 						with font-awesome or any other icon font library -->          
 						  <li class="nav-item">
-							  <a href="#" class="nav-link">
+							  <a href="" class="nav-link">
 								<i class="nav-icon fas fa-table"></i>
 								<p>
 								  Form
@@ -82,28 +95,27 @@ require ("../../../database/input.php");
 							  </a>
 							<ul class="nav nav-treeview">
 							  <li class="nav-item">
-								<a href="#" class="nav-link">
-								  <i class="far fa-circle nav-icon"></i>
-								  <p>Form General Input</p>
-								</a>
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Form General Input</p>
+                    </a>
 							  </li>
 							  <li class="nav-item">
-								<a href="../tables/table.php" class="nav-link">
-								  <i class="far fa-circle nav-icon"></i>
-								  <p>Form Data View</p>
-								</a>
+                    <a href="../tables/table.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Form Data View</p>
+                    </a>
 							  </li>
 							</ul>
 						  </li>
-						  <li class="nav-header">EXAMPLES</li>
-						  <li class="nav-item">
-							<a href="pages/gallery.html" class="nav-link">
-							  <i class="nav-icon far fa-image"></i>
-							  <p>
-							  Gallery
-							  </p>
-							</a>
-						  </li>
+						  <!-- <li class="nav-header">EXAMPLES</li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="nav-icon far fa-image"></i>
+                      <p>Gallery</p>
+                    </a>
+                </li>
+              </li> -->
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->
@@ -121,7 +133,7 @@ require ("../../../database/input.php");
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="">Home</a></li>
                 <li class="breadcrumb-item active">General Form</li>
               </ol>
             </div>
@@ -136,18 +148,40 @@ require ("../../../database/input.php");
           <div class="row">
             <!-- left column -->
             <div class="col-md-6">  
+                    <!-- form start armada-->
+                    <form action="../../../database/input.php" method="post">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                          <h3 class="card-title">Isi Armada (Jenis Kendaraan)</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="id">Id Armada</label>
+                                            <input id= "id" name= "id" class="form-control" type="number" placeholder="Id" readonly />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nama_armada">Nama Armada</label>
+                                            <input id= "nama_armada" name= "nama_armada" class="form-control" type="text" placeholder="Nama Armada" required />
+                                      </div>
+                                    </div>
+                                    <div class="card-footer">
+                                            <input type= "submit" value= "simpan" name= "proses" class= "btn btn-primary">
+                                            <input class="btn btn-danger" type="reset" name="cancel" value="clear">
+                                    </div>
+                                </div>
+                    </form>
+          
+                    <!-- form start paket-->
               <div class="card card-primary">
                     <div class="card-header">
                       <h3 class="card-title">Isi Data Paket</h3>
                     </div>
-          
-                    <!-- form start -->
                     <form action="../../../database/input.php" method="post" enctype="multipart/form-data">
                       <div class="card-body">
-                          <!-- <div class="form-group">
+                          <div class="form-group">
                                     <label for="id_paket">Id Paket</label>
-                                    <input id= "id_paket" name="id_paket" class="form-control" type="text" placeholder="Id Paket" />
-                          </div> -->
+                                    <input id= "id_paket" name="id_paket" class="form-control" type="text" placeholder="Terisi Otomatis" readonly />
+                          </div>
                           <div class="form-group">
                                     <label for="nama_paket">Nama Paket</label>
                                     <input id= "nama_paket" name="nama_paket" class="form-control" type="text" placeholder="Nama Paket" required />
@@ -203,27 +237,6 @@ require ("../../../database/input.php");
                               </div>
                   
                     <div class="col-md-6">
-                              <form action="../../../database/input.php" method="post">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                          <h3 class="card-title">Isi Armada (Jenis Kendaraan)</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="id">Id Armada</label>
-                                            <input id= "id" name= "id" class="form-control" type="number" placeholder="Id" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="nama_armada">Nama Armada</label>
-                                            <input id= "nama_armada" name= "nama_armada" class="form-control" type="text" placeholder="Nama Armada" required />
-                                      </div>
-                                    </div>
-                                    <div class="card-footer">
-                                            <input type= "submit" value= "simpan" name= "proses" class= "btn btn-primary">
-                                            <input class="btn btn-danger" type="reset" name="cancel" value="clear">
-                                    </div>
-                                </div>
-                              </form>
                           <!-- general form elements -->
                           <div class="card card-danger">
                               <div class="card-header">
@@ -236,7 +249,7 @@ require ("../../../database/input.php");
                             
                                   <div class="form-group">
                                             <label for="id_petugas">Id Petugas</label>
-                                            <input id= "id_petugas" name= "id_petugas" class="form-control" type="text" placeholder="Id Petugas" required />
+                                            <input id= "id_petugas" name= "id_petugas" class="form-control" type="text" placeholder="otomatis terisi" readonly />
                                   </div>
                                   <div class="form-group">
                                             <label for="nama_petugas">Nama Petugas</label>
@@ -263,6 +276,63 @@ require ("../../../database/input.php");
                               </form>
                               <!--/.form start-->
                           </div>
+
+                          <!-- general form elements -->
+                          <div class="card card-success">
+                              <div class="card-header">
+                                    <h3 class="card-title">Pengaturan SEO</h3>
+                              </div>
+                          
+                              <!-- form start seo -->
+                              <form action="../../../database/input.php" method="post">
+                                <div class="card-body">
+
+                                  <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <input id= "description" name= "description" class="form-control" type="text" placeholder="description" value="<?=$seo["description"]?>" required />
+                                  </div>
+                                  <div class="form-group">
+                                            <label for="keywords">Keywords</label>
+                                            <input id= "keywords" name= "keywords" class="form-control" type="text" placeholder="keywords" value="<?=$seo["keywords"]?>"required />
+                                  </div>
+                                  <div class="form-group">
+                                            <label for="author">Author</label>
+                                            <input type="text" name="author" class="form-control" id="author" placeholder="author" value="<?=$seo["author"]?>" required>
+                                  </div>
+
+                                  <div class="form-group">
+                                            <label>Robots Follow</label>
+                                            <div class="form-check">
+                                              <input class="form-check-input" id="follow" name= "robots_follow" type="radio" value="1" required <?=$seo["robots_follow"] ? "checked" : "" ?> />
+                                              <label class="form-check-label" for="follow">Follow</label>
+                                            </div>
+                                            <div class="form-check disable">
+                                              <input class="form-check-input" id="nofollow" name= "robots_follow" type="radio" value="0" required <?=!$seo["robots_follow"] ? "checked" : "" ?> />
+                                              <label class="form-check-label" for="nofollow">No-Follow</label>
+                                            </div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                            <label>Robots Index</label>
+                                            <div class="form-check">
+                                              <input class="form-check-input" id="index" name= "robots_index" type="radio" value="1" required <?=$seo["robots_index"] ? "checked" : "" ?> />
+                                              <label class="form-check-label" for="index">Index</label>
+                                            </div>
+                                            <div class="form-check disable">
+                                              <input class="form-check-input" id="noindex" name= "robots_index" type="radio" value="0" required <?=!$seo["robots_index"] ? "checked" : "" ?> />
+                                              <label class="form-check-label" for="noindex">No-Index</label>
+                                            </div>
+                                  </div>
+                                  
+                                  <div class="card-footer">
+                                            <input type= "submit" name="klik" value= "save" class= "btn btn-primary">
+                                            <input class="btn btn-danger" type="reset" name="cancel" value="clear">
+                                  </div>
+                                </div>
+                                <!-- /.card-body -->
+                              </form>
+                              <!--/.form start-->
+                          </div>
                     </div> 
               </div>
             <!-- general form elements -->
@@ -276,7 +346,7 @@ require ("../../../database/input.php");
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.1.0
     </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2021 <a href="">All Senses Journey</a>.</strong> All rights reserved.
   </footer>
   <!-- /.content-wrapper -->
   
